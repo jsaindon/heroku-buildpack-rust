@@ -60,7 +60,7 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y
 # fi
 # PATH="$rust_path/rustc/bin:$rust_path/cargo/bin:$PATH"
 rust_path=$HOME/.cargo/bin/
-PATH="$rustpath:$PATH"
+PATH="$rust_path:$PATH"
 echo "-----> PATH: $PATH"
 
 LD_LIBRARY_PATH="$rust_path/rustc/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
