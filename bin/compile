@@ -55,6 +55,8 @@ if [ ! -x "$rust_path/rustc/bin/rustc" ]; then
     exit 1
 fi
 PATH="$rust_path/rustc/bin:$rust_path/cargo/bin:$PATH"
+echo "-----> PATH: $PATH"
+
 LD_LIBRARY_PATH="$rust_path/rustc/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
 export LD_LIBRARY_PATH
 echo $LD_LIBRARY_PATH
@@ -63,6 +65,10 @@ echo $LD_LIBRARY_PATH
 # we would keep these in our cache, but our ".git" directories don't
 # survive between builds.
 cargo_home="$(mktemp -d -t cargo_XXXX)"
+echo "-----> cargo home: $cargo_home"
+
+echo "-----> contents of $rust_path:"
+ls "$rust_path"
 
 # Build the actual application using Cargo.
 echo "-----> Building application using Cargo"
