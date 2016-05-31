@@ -73,8 +73,8 @@ echo $LD_LIBRARY_PATH
 # cargo_home="$(mktemp -d -t cargo_XXXX)"
 # echo "-----> cargo home: $cargo_home"
 
-echo "-----> contents of $rust_path/rustc/lib:"
-ls "$rust_path/rustc/lib"
+echo "-----> contents of $rust_path/rustc/:"
+ls "$rust_path/rustc/"
 
 # Build the actual application using Cargo.
 echo "-----> Building application using Cargo"
