@@ -34,27 +34,33 @@ mkdir -p "$2"
 cd "$2"
 
 # Make sure we have the correct Rust binaries and set up PATH.
-if [ -d rust-cache-$VERSION ]; then
-  echo "-----> Using Rust version $VERSION"
-else
-  echo "-----> Downloading Rust version $VERSION binaries from $URL"
+# if [ -d rust-cache-$VERSION ]; then
+#   echo "-----> Using Rust version $VERSION"
+# else
+#   echo "-----> Downloading Rust version $VERSION binaries from $URL"
 
-  rm -f rust.tar.gz
-  rm -rf rust-cache-*
-  curl -o rust.tar.gz "$URL"
+#   rm -f rust.tar.gz
+#   rm -rf rust-cache-*
+#   curl -o rust.tar.gz "$URL"
 
-  echo "-----> Extracting Rust binaries"
+#   echo "-----> Extracting Rust binaries"
 
-  mkdir rust-cache-$VERSION
-  tar xzf rust.tar.gz -C rust-cache-$VERSION
-  rm -r rust.tar.gz
-fi
-rust_path=`ls -1d "$2/rust-cache-$VERSION/"*"/"`
-if [ ! -x "$rust_path/rustc/bin/rustc" ]; then
-    echo "failed: Cannot find Rust binaries at $rust_path/rustc/bin"
-    exit 1
-fi
-PATH="$rust_path/rustc/bin:$rust_path/cargo/bin:$PATH"
+#   mkdir rust-cache-$VERSION
+#   tar xzf rust.tar.gz -C rust-cache-$VERSION
+#   rm -r rust.tar.gz
+# fi
+
+# Install Rust
+curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+# rust_path=`ls -1d "$2/rust-cache-$VERSION/"*"/"`
+# if [ ! -x "$rust_path/rustc/bin/rustc" ]; then
+#     echo "failed: Cannot find Rust binaries at $rust_path/rustc/bin"
+#     exit 1
+# fi
+# PATH="$rust_path/rustc/bin:$rust_path/cargo/bin:$PATH"
+rust_path=$HOME/.cargo/bin/
+PATH="$rustpath:$PATH"
 echo "-----> PATH: $PATH"
 
 LD_LIBRARY_PATH="$rust_path/rustc/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
@@ -64,8 +70,8 @@ echo $LD_LIBRARY_PATH
 # Make sure we have a fake home directory for the Cargo cache.  Ideally
 # we would keep these in our cache, but our ".git" directories don't
 # survive between builds.
-cargo_home="$(mktemp -d -t cargo_XXXX)"
-echo "-----> cargo home: $cargo_home"
+# cargo_home="$(mktemp -d -t cargo_XXXX)"
+# echo "-----> cargo home: $cargo_home"
 
 echo "-----> contents of $rust_path/rustc/lib:"
 ls "$rust_path/rustc/lib"
@@ -76,4 +82,5 @@ echo "-----> Building application using Cargo"
 cd "$1"
 # To debug git issues:
 #export RUST_LOG="cargo::sources::git=debug"
-HOME="$cargo_home" cargo build --verbose --release
+#HOME="$cargo_home" cargo build --verbose --release
+cargo build --verbose --release
